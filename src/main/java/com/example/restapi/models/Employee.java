@@ -8,7 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -21,7 +21,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Table(name = "employee")
 public class Employee {
-  @NotNull(message = "Employee name is required")
+  @NotBlank(message = "Employee name is required")
   private String name;
 
   @Email(message = "Please provide a valid email")
@@ -30,10 +30,10 @@ public class Employee {
 
   private Long age = 0L;
 
-  @NotNull(message = "Please provide department name")
+  @NotBlank(message = "Please provide department name")
   private String department;
 
-  @NotNull(message = "Please provide a valid address")
+  @NotBlank(message = "Please provide a valid address")
   private String address;
 
   @Id
