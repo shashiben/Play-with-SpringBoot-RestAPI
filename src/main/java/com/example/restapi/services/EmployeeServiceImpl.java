@@ -5,6 +5,9 @@ import com.example.restapi.respositories.EmployeeRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,8 +16,9 @@ public class EmployeeServiceImpl implements EmployeeService {
   private EmployeeRepository employeeRepository;
 
   @Override
-  public List<Employee> getEmployees() {
-    return employeeRepository.findAll();
+  public List<Employee> getEmployees(int pageNumber, int pageSize) {
+    Pageable pages = PageRequest.of(pageNumber, pageSize);
+    return employeeRepository.findAll(pages).toList();
   }
 
   @Override
@@ -37,12 +41,25 @@ public class EmployeeServiceImpl implements EmployeeService {
   }
 
   @Override
-  public String deleteEmployee(Long id) {
-    try {
-      employeeRepository.deleteById(id);
-      return "Deleted employee with id " + id;
-    } catch (Exception e) {
-      return "Employee not found for the id " + id;
-    }
+  public void deleteEmployee(Long id) {
+    employeeRepository.deleteById(id);
+  }
+
+  @Override
+  public List<Employee> getEmployeesByName(String name, Sort sort) {
+    return employeeRepository.findByNameContaining(name, sort);
+  }
+
+  @Override
+  public List<Employee> getEmployeesByNameAndAddress(
+    String name,
+    String address,
+    Sort sort
+  ) {
+    return employeeRepository.findByNameContainingAndAddress(
+      name,
+      address,
+      sort
+    );
   }
 }
