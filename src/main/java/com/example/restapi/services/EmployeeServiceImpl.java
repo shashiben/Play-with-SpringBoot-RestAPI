@@ -51,26 +51,26 @@ public class EmployeeServiceImpl implements EmployeeService {
     return employeeRepository.findByNameContaining(name, sort);
   }
 
-  @Override
-  public List<Employee> getEmployeesByNameAndAddress(
-    String name,
-    String address,
-    Sort sort
-  ) {
-    return employeeRepository.findByNameContainingAndAddress(
-      name,
-      address,
-      sort
-    );
-  }
+  // @Override
+  // public List<Employee> getEmployeesByNameAndAddress(
+  //   String name,
+  //   String address,
+  //   Sort sort
+  // ) {
+  //   return employeeRepository.findByNameContainingAndAddress(
+  //     name,
+  //     address,
+  //     sort
+  //   );
+  // }
 
-  @Override
-  public List<Employee> getEmployeeByNameOrAddress(
-    String name,
-    String address
-  ) {
-    return employeeRepository.getEmployeeByNameAndAddress(name, address);
-  }
+  // @Override
+  // public List<Employee> getEmployeeByNameOrAddress(
+  //   String name,
+  //   String address
+  // ) {
+  //   return employeeRepository.getEmployeeByNameAndAddress(name, address);
+  // }
 
   @Override
   public Integer deleteEmployeeByName(String name) {

@@ -1,11 +1,14 @@
 package com.example.restapi.models;
 
+import com.example.restapi.request.EmployeeRequest;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -30,12 +33,6 @@ public class Employee {
 
   private Long age = 0L;
 
-  @NotBlank(message = "Please provide department name")
-  private String department;
-
-  @NotBlank(message = "Please provide a valid address")
-  private String address;
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
@@ -48,4 +45,18 @@ public class Employee {
   @UpdateTimestamp
   @Column(name = "updated_at", nullable = false)
   private Date updatedAt;
+
+  @JoinColumn(name = "department_id")
+  @OneToOne
+  private Department department;
+
+  public Employee() {}
+
+  public Employee(EmployeeRequest request) {
+    this.name = request.getName();
+    this.email = request.getEmail();
+    this.age = request.getAge();
+    this.createdAt = request.getCreatedAt();
+    this.updatedAt = request.getUpdatedAt();
+  }
 }

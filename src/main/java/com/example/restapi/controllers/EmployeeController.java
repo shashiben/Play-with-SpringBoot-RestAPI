@@ -1,9 +1,12 @@
 package com.example.restapi.controllers;
 
+import com.example.restapi.models.Department;
 import com.example.restapi.models.Employee;
+import com.example.restapi.request.EmployeeRequest;
+import com.example.restapi.respositories.DepartmentRepository;
+import com.example.restapi.respositories.EmployeeRepository;
 import com.example.restapi.services.EmployeeService;
 import java.util.List;
-import java.util.Optional;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,6 +32,12 @@ public class EmployeeController {
   @Autowired
   private EmployeeService employeeService;
 
+  @Autowired
+  private EmployeeRepository employeeRepository;
+
+  @Autowired
+  private DepartmentRepository departmentRepository;
+
   @GetMapping("/")
   public ResponseEntity<List<Employee>> getEmployees(
     @RequestParam Integer pageNumber,
@@ -42,8 +51,13 @@ public class EmployeeController {
 
   @PostMapping("/")
   public ResponseEntity<Employee> createEmployee(
-    @Valid @RequestBody Employee employee
+    @Valid @RequestBody EmployeeRequest employeeRequest
   ) {
+    Department department = new Department();
+    department.setName(employeeRequest.getDepartment());
+    department = departmentRepository.save(department);
+    Employee employee = new Employee(employeeRequest);
+    employee.setDepartment(department);
     return new ResponseEntity<>(
       employeeService.createEmployee(employee),
       HttpStatus.CREATED
@@ -80,32 +94,26 @@ public class EmployeeController {
 
   @GetMapping("/filter")
   public ResponseEntity<List<Employee>> getEmployeesByName(
-    @RequestParam String name,
-    @RequestParam Optional<String> address
+    @RequestParam String name
   ) {
     Sort sort = Sort.by(Sort.Direction.DESC, "id");
-    if (address.isPresent()) {
-      return new ResponseEntity<>(
-        employeeService.getEmployeesByNameAndAddress(name, address.get(), sort),
-        HttpStatus.OK
-      );
-    }
+
     return new ResponseEntity<List<Employee>>(
       employeeService.getEmployeesByName(name, sort),
       HttpStatus.OK
     );
   }
 
-  @GetMapping("/getByNameOrLocation")
-  public ResponseEntity<List<Employee>> getEmployeeByNameOrLocation(
-    @RequestParam String name,
-    @RequestParam String address
-  ) {
-    return new ResponseEntity<>(
-      employeeService.getEmployeeByNameOrAddress(name, address),
-      HttpStatus.OK
-    );
-  }
+  // @GetMapping("/getByNameOrLocation")
+  // public ResponseEntity<List<Employee>> getEmployeeByNameOrLocation(
+  //   @RequestParam String name,
+  //   @RequestParam String address
+  // ) {
+  //   return new ResponseEntity<>(
+  //     employeeService.getEmployeeByNameOrAddress(name, address),
+  //     HttpStatus.OK
+  //   );
+  // }
 
   @DeleteMapping("/deleteByName")
   public ResponseEntity<Integer> deleteEmployeeByName(
@@ -113,6 +121,16 @@ public class EmployeeController {
   ) {
     return new ResponseEntity<>(
       employeeService.deleteEmployeeByName(name),
+      HttpStatus.OK
+    );
+  }
+
+  @GetMapping("/department")
+  public ResponseEntity<List<Employee>> getEmployeeByDepartment(
+    @RequestParam String name
+  ) {
+    return new ResponseEntity<>(
+      employeeRepository.getEmployeesByDeptName(name),
       HttpStatus.OK
     );
   }
