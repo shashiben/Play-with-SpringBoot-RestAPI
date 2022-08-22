@@ -6,11 +6,11 @@ import java.util.List;
 public interface EmployeeService {
   public List<Employee> getEmployees();
 
-  public String createEmployee(Employee employee);
+  public Employee createEmployee(Employee employee);
 
-  public Employee updateEmployee(Long id, Employee employee);
+  public Employee updateEmployee(Employee employee);
 
-  public String getEmployeeById(Long id);
+  public Employee getEmployeeById(Long id);
 
   public String deleteEmployee(Long id);
 }

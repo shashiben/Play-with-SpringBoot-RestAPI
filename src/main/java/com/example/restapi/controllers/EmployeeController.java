@@ -29,8 +29,8 @@ public class EmployeeController {
   }
 
   @PostMapping("/")
-  public String createEmployee(@RequestBody Employee employee) {
-    return employee.toString();
+  public Employee createEmployee(@RequestBody Employee employee) {
+    return employeeService.createEmployee(employee);
   }
 
   @PutMapping("/{id}")
@@ -38,16 +38,16 @@ public class EmployeeController {
     @PathVariable Long id,
     @RequestBody Employee employee
   ) {
-    return employee;
+    return employeeService.updateEmployee(employee);
   }
 
   @GetMapping("/{id}")
-  public String getEmployeeById(@PathVariable("id") Long id) {
-    return "Employee with id " + id;
+  public Employee getEmployeeById(@PathVariable("id") Long id) {
+    return employeeService.getEmployeeById(id);
   }
 
   @DeleteMapping("/{id}")
   public String deleteEmployee(@PathVariable("id") Long id) {
-    return "Deleting Employee with id " + id;
+    return employeeService.deleteEmployee(id);
   }
 }
