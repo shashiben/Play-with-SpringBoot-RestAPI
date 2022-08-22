@@ -3,6 +3,7 @@ package com.example.restapi.controllers;
 import com.example.restapi.models.Employee;
 import com.example.restapi.services.EmployeeService;
 import java.util.List;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,14 +30,14 @@ public class EmployeeController {
   }
 
   @PostMapping("/")
-  public Employee createEmployee(@RequestBody Employee employee) {
+  public Employee createEmployee(@Valid @RequestBody Employee employee) {
     return employeeService.createEmployee(employee);
   }
 
   @PutMapping("/{id}")
   public Employee updateEmployee(
     @PathVariable Long id,
-    @RequestBody Employee employee
+    @Valid @RequestBody Employee employee
   ) {
     return employeeService.updateEmployee(employee);
   }
