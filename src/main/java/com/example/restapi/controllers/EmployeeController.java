@@ -86,12 +86,33 @@ public class EmployeeController {
     Sort sort = Sort.by(Sort.Direction.DESC, "id");
     if (address.isPresent()) {
       return new ResponseEntity<>(
-        employeeService.getEmployeesByNameAndAddress(name, address.get(),sort),
+        employeeService.getEmployeesByNameAndAddress(name, address.get(), sort),
         HttpStatus.OK
       );
     }
     return new ResponseEntity<List<Employee>>(
-      employeeService.getEmployeesByName(name,sort),
+      employeeService.getEmployeesByName(name, sort),
+      HttpStatus.OK
+    );
+  }
+
+  @GetMapping("/getByNameOrLocation")
+  public ResponseEntity<List<Employee>> getEmployeeByNameOrLocation(
+    @RequestParam String name,
+    @RequestParam String address
+  ) {
+    return new ResponseEntity<>(
+      employeeService.getEmployeeByNameOrAddress(name, address),
+      HttpStatus.OK
+    );
+  }
+
+  @DeleteMapping("/deleteByName")
+  public ResponseEntity<Integer> deleteEmployeeByName(
+    @RequestParam String name
+  ) {
+    return new ResponseEntity<>(
+      employeeService.deleteEmployeeByName(name),
       HttpStatus.OK
     );
   }

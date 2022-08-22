@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,8 +18,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
   @Override
   public List<Employee> getEmployees(int pageNumber, int pageSize) {
-    Pageable pages = PageRequest.of(pageNumber, pageSize);
-    return employeeRepository.findAll(pages).toList();
+    Pageable pages = PageRequest.of(pageNumber, pageSize, Direction.DESC, "id");
+    return employeeRepository.findAll(pages).getContent();
   }
 
   @Override
@@ -61,5 +62,18 @@ public class EmployeeServiceImpl implements EmployeeService {
       address,
       sort
     );
+  }
+
+  @Override
+  public List<Employee> getEmployeeByNameOrAddress(
+    String name,
+    String address
+  ) {
+    return employeeRepository.getEmployeeByNameAndAddress(name, address);
+  }
+
+  @Override
+  public Integer deleteEmployeeByName(String name) {
+    return employeeRepository.deleteEmployeeByName(name);
   }
 }

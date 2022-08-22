@@ -22,4 +22,10 @@ public interface EmployeeService {
     String address,
     Sort sort
   );
+
+  public List<Employee> getEmployeeByNameOrAddress(
+    String name,
+    String address
+  );
+  public Integer deleteEmployeeByName(String name);
 }
